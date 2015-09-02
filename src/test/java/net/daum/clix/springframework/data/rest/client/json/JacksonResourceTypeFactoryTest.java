@@ -2,12 +2,13 @@ package net.daum.clix.springframework.data.rest.client.json;
 
 import static org.junit.Assert.assertEquals;
 
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.type.SimpleType;
-import org.codehaus.jackson.type.JavaType;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.hateoas.Resource;
+
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.SimpleType;
 
 public class JacksonResourceTypeFactoryTest {
 
@@ -20,7 +21,7 @@ public class JacksonResourceTypeFactoryTest {
 
 	@Test
 	public void testGetResourceType() throws Exception {
-		JavaType resourceType = typeFactory.getResourceType(Resource.class, Object.class);
+		final JavaType resourceType = typeFactory.getResourceType(Resource.class, Object.class);
 
 		assertEquals(Resource.class, resourceType.getRawClass());
 		assertEquals("Lorg/springframework/hateoas/Resource<Ljava/lang/Object;>;", resourceType.getGenericSignature());
@@ -28,10 +29,10 @@ public class JacksonResourceTypeFactoryTest {
 
 	@Test
 	public void testGetMapResourceType() throws Exception {
-		SimpleType mapResourceType = (SimpleType) typeFactory.getMapResourceType(Resource.class, String.class,
+		final SimpleType mapResourceType = (SimpleType) typeFactory.getMapResourceType(Resource.class, String.class,
 				Object.class);
 
-		String expectedSignature = "Lorg/springframework/hateoas/Resource<Ljava/util/Map<Ljava/lang/String;Lorg/springframework/hateoas/Resource<Ljava/lang/Object;>;>;>;";
+		final String expectedSignature = "Lorg/springframework/hateoas/Resource<Ljava/util/Map<Ljava/lang/String;Lorg/springframework/hateoas/Resource<Ljava/lang/Object;>;>;>;";
 		assertEquals(expectedSignature, mapResourceType.getGenericSignature());
 	}
 

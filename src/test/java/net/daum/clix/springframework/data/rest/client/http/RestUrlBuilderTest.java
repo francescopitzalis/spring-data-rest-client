@@ -15,9 +15,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.data.rest.example.Person;
 import org.springframework.data.rest.example.PersonRepository;
-import org.springframework.data.rest.repository.annotation.RestResource;
 import org.springframework.util.ReflectionUtils;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -29,7 +29,7 @@ public class RestUrlBuilderTest {
 	@Mock
 	private RestResource restResource;
 
-	private Class<?> domainClass = Person.class;
+	private final Class<?> domainClass = Person.class;
 
 	private RestUrlBuilder urlBuilder;
 
@@ -64,7 +64,7 @@ public class RestUrlBuilderTest {
 
 	@Test
 	public void testBuildQueryUrl() throws Exception {
-		Method queryMethod = ReflectionUtils.findMethod(PersonRepository.class, "findByName", String.class);
+		final Method queryMethod = ReflectionUtils.findMethod(PersonRepository.class, "findByName", String.class);
 
 		String url = urlBuilder.buildQueryUrl(Person.class, queryMethod);
 		assertEquals("http://1.2.3.4/people/search/name", url);
