@@ -11,21 +11,21 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<springframeworkdata.version>1.0.0.RELEASE</springframeworkdata.version>
-		<cglib.version>2.2.2</cglib.version>
-		<httpclient.version>4.2.1</httpclient.version>
+		<springframeworkdata.version>2.3.2.RELEASE</springframeworkdata.version>
+		<cglib.version>3.1</cglib.version>
+		<httpclient.version>4.5</httpclient.version>
+		<jackson.version>2.6.1</jackson.version>
 
 		<!-- For test -->
-		<springframework.version>3.1.2.RELEASE</springframework.version>
-		<junit.version>4.10</junit.version>
-		<mockito.version>1.9.5</mockito.version>
-		<powermock.version>1.4.12</powermock.version>
+		<springframework.version>4.2.1.RELEASE</springframework.version>
+		<junit.version>4.12</junit.version>
+		<mockito.version>1.10.19</mockito.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-rest-repository</artifactId>
+			<artifactId>spring-data-rest-core</artifactId>
 			<version>${springframeworkdata.version}</version>
 		</dependency>
 
@@ -46,6 +46,21 @@
 			<artifactId>gson</artifactId>
 			<version>2.2.2</version>
 		</dependency>
+
+		<!-- JACKSON -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+
+		<!-- JAVAX PERSISENCE -->
+		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>javax.persistence</artifactId>
+			<version>2.1.0</version>
+		</dependency>
+
 
 		<!-- Testing -->
 		<dependency>

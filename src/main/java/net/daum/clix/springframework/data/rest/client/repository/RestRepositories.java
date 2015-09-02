@@ -31,7 +31,7 @@ import org.springframework.data.repository.core.EntityInformation;
 import org.springframework.data.repository.core.RepositoryInformation;
 import org.springframework.data.repository.core.support.RepositoryFactoryInformation;
 import org.springframework.data.repository.query.QueryMethod;
-import org.springframework.data.rest.repository.annotation.RestResource;
+import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -60,17 +60,17 @@ public class RestRepositories implements Iterable<Class<?>> {
 
 		Assert.notNull(factory);
 
-		Collection<RestRepositoryFactoryBean> providers = BeanFactoryUtils.beansOfTypeIncludingAncestors(factory,
+		final Collection<RestRepositoryFactoryBean> providers = BeanFactoryUtils.beansOfTypeIncludingAncestors(factory,
 				RestRepositoryFactoryBean.class, true, false).values();
 
-		for (RepositoryFactoryInformation<Object, Serializable> info : providers) {
+		for (final RepositoryFactoryInformation<Object, Serializable> info : providers) {
 
-			RepositoryInformation information = info.getRepositoryInformation();
-			Class repositoryInterface = information.getRepositoryInterface();
+			final RepositoryInformation information = info.getRepositoryInformation();
+			final Class repositoryInterface = information.getRepositoryInterface();
 
 			if (CrudRepository.class.isAssignableFrom(repositoryInterface)) {
-				Class<CrudRepository<Object, Serializable>> objectType = repositoryInterface;
-				CrudRepository<Object, Serializable> repository = BeanFactoryUtils.beanOfTypeIncludingAncestors(
+				final Class<CrudRepository<Object, Serializable>> objectType = repositoryInterface;
+				final CrudRepository<Object, Serializable> repository = BeanFactoryUtils.beanOfTypeIncludingAncestors(
 						factory, objectType);
 
 				this.domainClassToBeanName.put(information.getDomainType(), info);
@@ -83,7 +83,7 @@ public class RestRepositories implements Iterable<Class<?>> {
 
 	private String getResourcePath(Class<?> repositoryInterface) {
 		String path = StringUtils.uncapitalize(repositoryInterface.getSimpleName().replaceAll("Repository", ""));
-		RestResource restResource = repositoryInterface.getAnnotation(RestResource.class);
+		final RestResource restResource = repositoryInterface.getAnnotation(RestResource.class);
 		if (restResource != null && StringUtils.hasText(restResource.path())) {
 			path = restResource.path();
 		}
@@ -124,7 +124,7 @@ public class RestRepositories implements Iterable<Class<?>> {
 	@SuppressWarnings("unchecked")
 	public <T, S extends Serializable> EntityInformation<T, S> getEntityInformationFor(Class<?> domainClass) {
 
-		RepositoryFactoryInformation<Object, Serializable> information = getRepoInfoFor(domainClass);
+		final RepositoryFactoryInformation<Object, Serializable> information = getRepoInfoFor(domainClass);
 		return information == null ? null : (EntityInformation<T, S>) information.getEntityInformation();
 	}
 
@@ -139,13 +139,14 @@ public class RestRepositories implements Iterable<Class<?>> {
 	 */
 	public RepositoryInformation getRepositoryInformationFor(Class<?> domainClass) {
 
-		RepositoryFactoryInformation<Object, Serializable> information = getRepoInfoFor(domainClass);
+		final RepositoryFactoryInformation<Object, Serializable> information = getRepoInfoFor(domainClass);
 		return information == null ? null : information.getRepositoryInformation();
 	}
 
 	/**
 	 * Returns the {@link Repository} class interface for the given domain
 	 * class. Simply delegates to {@RepositoryInformation
+	 * 
 	 * 
 	 * 
 	 * }
@@ -155,7 +156,7 @@ public class RestRepositories implements Iterable<Class<?>> {
 	 * @return
 	 */
 	public Class<?> getRepositoryInterfaceFor(Class<?> domainClass) {
-		RepositoryInformation repositoryInformation = getRepositoryInformationFor(domainClass);
+		final RepositoryInformation repositoryInformation = getRepositoryInformationFor(domainClass);
 		return repositoryInformation == null ? null : repositoryInformation.getRepositoryInterface();
 	}
 
@@ -169,7 +170,7 @@ public class RestRepositories implements Iterable<Class<?>> {
 	 *         class.
 	 */
 	public RepositoryInformation findRepositoryInformationFor(String resourcePath) {
-		RepositoryFactoryInformation<Object, Serializable> repositoryFactoryInformation = this.resourcePathToBeanName
+		final RepositoryFactoryInformation<Object, Serializable> repositoryFactoryInformation = this.resourcePathToBeanName
 				.get(resourcePath);
 		return repositoryFactoryInformation == null ? null : repositoryFactoryInformation.getRepositoryInformation();
 	}
@@ -183,7 +184,7 @@ public class RestRepositories implements Iterable<Class<?>> {
 	 *         if no repository registered for this resource path
 	 */
 	public String findDomainClassNameFor(String resourcePath) {
-		RepositoryInformation repoInfo = findRepositoryInformationFor(resourcePath);
+		final RepositoryInformation repoInfo = findRepositoryInformationFor(resourcePath);
 		return repoInfo == null ? null : repoInfo.getDomainType().getName();
 	}
 
@@ -196,12 +197,12 @@ public class RestRepositories implements Iterable<Class<?>> {
 	 *         {@literal null} if no @RestResource presents.
 	 */
 	public RestResource getRestResourceAnnotationFor(Class<?> domainClass) {
-		Class<?> repositoryInterface = getRepositoryInterfaceFor(domainClass);
+		final Class<?> repositoryInterface = getRepositoryInterfaceFor(domainClass);
 		return repositoryInterface == null ? null : repositoryInterface.getAnnotation(RestResource.class);
 	}
 
 	public String getRepositoryNameFor(Class<?> domainClass) {
-		Class<?> repositoryInterface = getRepositoryInterfaceFor(domainClass);
+		final Class<?> repositoryInterface = getRepositoryInterfaceFor(domainClass);
 		return repositoryInterface == null ? null : StringUtils.uncapitalize(repositoryInterface.getSimpleName()
 				.replaceAll("Repository", ""));
 	}
@@ -216,7 +217,7 @@ public class RestRepositories implements Iterable<Class<?>> {
 	 */
 	public List<QueryMethod> getQueryMethodsFor(Class<?> domainClass) {
 
-		RepositoryFactoryInformation<Object, Serializable> information = getRepoInfoFor(domainClass);
+		final RepositoryFactoryInformation<Object, Serializable> information = getRepoInfoFor(domainClass);
 		return information == null ? Collections.<QueryMethod> emptyList() : information.getQueryMethods();
 	}
 
@@ -224,7 +225,7 @@ public class RestRepositories implements Iterable<Class<?>> {
 
 		Assert.notNull(domainClass);
 
-		for (RepositoryFactoryInformation<Object, Serializable> information : repositories.keySet()) {
+		for (final RepositoryFactoryInformation<Object, Serializable> information : repositories.keySet()) {
 			if (domainClass.equals(information.getEntityInformation().getJavaType())) {
 				return information;
 			}
@@ -238,6 +239,7 @@ public class RestRepositories implements Iterable<Class<?>> {
 	 * 
 	 * @see java.lang.Iterable#iterator()
 	 */
+	@Override
 	public Iterator<Class<?>> iterator() {
 		return domainClassToBeanName.keySet().iterator();
 	}
